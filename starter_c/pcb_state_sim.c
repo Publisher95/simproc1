@@ -1,7 +1,12 @@
 /*
  * CS 440 – PCB Simulator Starter (C)
+ * Michael Gavina: 801970144
+ *
+ *
  * TODO: Add your name(s) and BearID(s)
  */
+
+
 
 #include <stdio.h>
 #include <stdlib.h>
