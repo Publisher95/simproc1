@@ -26,6 +26,59 @@ typedef struct PCB {
     struct PCB *next;
 } PCB;
 
+
+// We could make it so that PCB will point to the process behind it and that is the next PCB
+
+// That will then make the queue very easy to implement.
+typedef struct rdyQueue {
+	PCB *head;
+	PCB *tail;
+	int size;
+
+} rdyQueue;
+
+typedef struct waitQueue {
+	PCB *head;
+	PCB *tail;
+	int size;
+} waitQueue;
+
+
+//These are not final, feel free to change them, I thought if I just laid the ground work it would work well.
+
+int create(char name[], int priority){
+
+
+}
+
+int dispatch(){
+
+}
+
+int tick(int n){
+
+}
+
+int block(char name[]){
+
+}
+
+int exit(char name[]){
+
+}
+
+void status(){
+
+}
+
+
+// This is extra credit which I would be down to go for
+
+int kill(char name[]){
+
+}
+
+
 // TODO: process table
 // TODO: READY queue
 // TODO: WAITING queue
