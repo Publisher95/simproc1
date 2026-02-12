@@ -44,10 +44,16 @@ typedef struct waitQueue {
 
 } waitQueue;
 
+int procsim_num = 2; 
+
 
 //These are not final, feel free to change them, I thought if I just laid the ground work it would work well.
 
 int procsim_create(char name[], int priority){
+
+
+
+
 	return 0;
 }
 
@@ -67,7 +73,7 @@ int procsim_exit(char name[]){
 	return 0;
 }
 
-void status(){
+void procsim_status(){
 
 }
 
@@ -75,7 +81,7 @@ void status(){
 // This is extra credit which I would be down to go for
 
 int procsim_kill(char name[]){
-
+	return 0;
 }
 
 
