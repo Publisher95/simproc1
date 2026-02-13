@@ -27,62 +27,117 @@ typedef struct PCB {
 } PCB;
 
 
-// We could make it so that PCB will point procsim_to the process behind it and that is the next PCB
+// PBC *next will point to the PCB behind it
 
-// That will then make the queue very easy to implement.
-typedef struct rdyQueue {
+
+// changed rdyQueue and waitQueue because they were the same struct and we need just one queue struct
+typedef struct queue{
 	PCB *head;
 	PCB *tail;
 	int size;
 
-} rdyQueue;
+} queue;
 
-typedef struct waitQueue {
-	PCB *head;
-	PCB *tail;
-	int size;
-
-} waitQueue;
-
-int procsim_num = 2; 
-
-
-//These are not final, feel free to change them, I thought if I just laid the ground work it would work well.
-
-int procsim_create(char name[], int priority){
+int procsimNum = 1; // I planned on using this to increment with every create. 
+		    // I Don't know if it works like that in c but we will see --\(-_-)/--
 
 
 
+
+
+
+int procsimCreate(char name[32], int priority, queue *rdyQueue, queue *waitQueue){
+	
+	PCB *search = rdyQueue->head;
+	while(search->next != NULL || rdyQueue->size != 0){
+		if (strcmp(search->name, name) == 0) {
+			return -1;
+		}
+		search = search->next;
+	}
+	search = waitQueue->head;
+	while((search->next) != NULL || (*waitQueue).size != 0){
+		if (strcmp(search->name, name) == 0) {
+			return -1;
+		}
+		search = (search->next);
+	}
+
+
+	PCB process; // if we were feeling extra saucy we could allocate this to the heap with malloc to save precious stack space 
+		     // In a larger system that would make sense.
+	
+
+	strcpy(process.name, name);
+	process.pid = procsimNum;
+	procsimNum++;
+	process.state = READY;	
+	process.priority = priority;
+	process.pc = 0;
+	process.cpuTime = 0;
+
+	PCB cpyProcess;
+
+	if(rdyQueue->size == 0){
+	rdyQueue->head = &process;
+	rdyQueue->tail = &process;
+	rdyQueue->size = rdyQueue->size + 1;
+	}
+	else{
+	cpyProcess = *(rdyQueue->tail);
+	rdyQueue->tail = &process;
+	cpyProcess.next = &process;
+
+	rdyQueue->size = rdyQueue->size + 1;
+	}
+
+	return 1;
+	
+}
+
+
+
+int procsimDispatch(queue *rdyQueue, PCB **running){
+	return 0;
+}
+
+
+
+int procsimTick(int n){
+	return 0;
+}
+
+
+
+int procsimBlock(char name[], PCB **running){
+	return 0;
+}
+
+
+
+int procsimWake(char name[], queue *waitQueue){
 
 	return 0;
 }
 
-int procsim_dispatch(){
+
+
+int procsimExit(char name[]){
 	return 0;
 }
 
-int procsim_tick(int n){
+
+
+void procsimStatus(){
+	
+}
+
+
+
+int procsimKill(char name[], queue *rdyQueue, queue *waitQueue, PCB **running){
 	return 0;
 }
 
-int procsim_block(char name[]){
-	return 0;
-}
-
-int procsim_exit(char name[]){
-	return 0;
-}
-
-void procsim_status(){
-
-}
-
-
-// This is extra credit which I would be down to go for
-
-int procsim_kill(char name[]){
-	return 0;
-}
 
 
 // TODO: process table
@@ -95,6 +150,11 @@ int main(int argc, char *argv[]) {
 	// TODO: parse args
 	// TODO: read trace file
 	// TODO: dispatch commands
+	queue rdyQueue;
+	queue waitQueue;
+	PCB *running;	
+	
+
 	if (argc < 2) {
 		fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
 		return 1;
